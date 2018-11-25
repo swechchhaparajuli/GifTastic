@@ -66,20 +66,22 @@
           console.log(response.data[0]);
           
 
-    for(var i = 0; i<10; i++){
-      var potterDiv = $("<div class='movie'>");
-      var rating = response.data[0].rating;
-      var pOne = $("<p>").text("Rating: " + rating);
-      potterDiv.append(pOne);
-      var imgURL = response.data[i].images.fixed_height_still.url;
-     var imgMovURL = response.data[i].images.fixed_height.url;
-      var image = $("<img>").attr("src", imgURL);
-      image.addClass("gif");
-      $(image).attr("src2", imgMovURL);
-      potterDiv.append(image);
-      $("#movies-view").prepend(potterDiv);
+          for(var i = 0; i<10; i++){
+            var potterDiv = $("<div class='movie'>");
+            var rating = response.data[0].rating;
+            var pOne = $("<p>").text("Rating: " + rating);
+            potterDiv.append(pOne);
+            var imgURL = response.data[i].images.fixed_height_still.url;
+            var imgMovURL = response.data[i].images.fixed_height.url;
+            var image = $("<img>").attr("src", imgURL);
+            $(image).attr("status", "still");
+            image.addClass("gif");
+            $(image).attr("movingURL", imgMovURL);
+            $(image).attr("stillURL", imgURL);
+            potterDiv.append(image);
+            $("#movies-view").prepend(potterDiv);
 
-    }
+          }
 
           
         });
@@ -89,16 +91,15 @@
       $(document).on("click", ".gif", function() {
 
        // $(this).attr("src", this.imgMovUrl);
-        console.log(this.src);
 
-       /* if ($(this).attr("data-state") == "still"){
-          
-          $(this).attr("data-state", "animate");
-        }else{
-          $(this).attr("src", this.imgUrl);
-          $(this).attr("data-state", "still");
-        }
-*/
+       if($(this).attr("status") == "still"){
+          $(this).attr("src", $(this).attr("movingURL"));
+          $(this).attr("status", "animated");
+       }else{
+        $(this).attr("src", $(this).attr("stillURL"));
+        $(this).attr("status", "still");
+       }
+
       });
 
       // Function for displaying data
