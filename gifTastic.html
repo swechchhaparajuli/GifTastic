@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Favorite Movies</title>
+  <title>GifTastic</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
@@ -21,32 +21,40 @@
 <body>
 
   <div class="container">
-    <h1>Movie Search</h1>
+    <h1>Harry Potter Gif Search</h1>
 
     <!-- Rendered Buttons will get Dumped Here  -->
     <div id="buttons-view"></div>
 
-    <form id="movie-form">
-      <label for="movie-input">Add a Potter thing, Yo!</label>
-      <input type="text" id="movie-input">
-      <br>
+    <div class = "container">
+        <div class="row">
+          <div class="col-sm-8">
+            <form id="movie-form">
+              <label for="movie-input"> <h4>Enter Gif Search: </h4></label>
+                <input type="text" id="movie-input">
+                <br>
+          </div>
 
+          <div class="col-sm-4">
       <!-- Button triggers new movie to be added -->
-      <input id="add-movie" type="submit" value="Add a Movie, Yo!">
-    </form>
+            <input id="add-movie" type="submit" value="Add some Gifs!">
+          </form>
 
     <!-- Movies will Get Dumped Here -->
-    <div id="movies-view"></div>
+              <div id="movies-view"></div>
+          </div>
+      </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-      // Initial array of movies
-      var movies = ["Harry Potter"];
+      // Initial array of topics
+      var topics = ["Harry Potter", "luna", "ron weasley"];
 
       // displayMovieInfo function re-renders the HTML to display the appropriate content
       function displayMovieInfo() {
 
-        var potter = $(this).attr("data-name");
+        var potter = "harry potter " + $(this).attr("data-name");
         var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=6HbQXsBHPrRMObSKz189KkHd7H2B9sn7&q=" + potter + "&limit=25&offset=0&rating=G&lang=en";
 
         // Creating an AJAX call for the specific movie button being clicked
@@ -55,72 +63,63 @@
           method: "GET"
         }).then(function(response) {
 
-          console.log(response)
+          console.log(response.data[0]);
+          
 
-          // Creating a div to hold the movie
-          var potterDiv = $("<div class='movie'>");
+    for(var i = 0; i<10; i++){
+      var potterDiv = $("<div class='movie'>");
+      var rating = response.data[0].rating;
+      var pOne = $("<p>").text("Rating: " + rating);
+      potterDiv.append(pOne);
+      var imgURL = response.data[i].images.fixed_height_still.url;
+     var imgMovURL = response.data[i].images.fixed_height.url;
+      var image = $("<img>").attr("src", imgURL);
+      image.addClass("gif");
+      $(image).attr("src2", imgMovURL);
+      potterDiv.append(image);
+      $("#movies-view").prepend(potterDiv);
 
-          // Storing the rating data
-       //   var rating = response.Rated;
+    }
 
-          // Creating an element to have the rating displayed
-      //    var pOne = $("<p>").text("Rating: " + rating);
-
-          // Displaying the rating
-      //    potterDiv.append(pOne);
-
-          // Storing the release year
-     //     var released = response.Released;
-
-          // Creating an element to hold the release year
-     //     var pTwo = $("<p>").text("Released: " + released);
-
-          // Displaying the release year
-   //       potterDiv.append(pTwo);
-
-          // Storing the plot
-  //        var plot = response.Plot;
-
-          // Creating an element to hold the plot
- //         var pThree = $("<p>").text("Plot: " + plot);
-
-          // Appending the plot
- //         potterDiv.append(pThree);
-
-          // Retrieving the URL for the image
-          var imgURL = response.Poster;
-
-          // Creating an element to hold the image
-          var image = $("<img>").attr("src", imgURL);
-
-          // Appending the image
-          potterDiv.append(image);
-
-          // Putting the entire movie above the previous movies
-          $("#movies-view").prepend(potterDiv);
+          
         });
 
       }
 
-      // Function for displaying movie data
-      function renderButtons() {
+      $(document).on("click", ".gif", function() {
 
-        // Deleting the movies prior to adding new movies
+       // $(this).attr("src", this.imgMovUrl);
+        console.log(this.src);
+
+       /* if ($(this).attr("data-state") == "still"){
+          
+          $(this).attr("data-state", "animate");
+        }else{
+          $(this).attr("src", this.imgUrl);
+          $(this).attr("data-state", "still");
+        }
+*/
+      });
+
+      // Function for displaying data
+      function renderButtons() {
         // (this is necessary otherwise you will have repeat buttons)
         $("#buttons-view").empty();
 
-        // Looping through the array of movies
-        for (var i = 0; i < movies.length; i++) {
+        // Looping through the array
+        for (var i = 0; i < topics.length; i++) {
 
           // Then dynamicaly generating buttons for each movie in the array
           // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-          var a = $("<button>");
+          var a = $("<button>"); 
           // Adding a class of movie-btn to our button
-          a.addClass("movie-btn");
+          a.addClass("movie-btn btn btn-primary");
+
           // Adding a data-attribute
-          a.attr("data-name", movies[i]);
+          a.attr("data-name", topics[i]);
+          
           // Providing the initial button text
-          a.text(movies[i]);
+          a.text(topics[i]);
           // Adding the button to the buttons-view div
           $("#buttons-view").append(a);
         }
@@ -128,12 +127,13 @@
 
       // This function handles events where a movie button is clicked
       $("#add-movie").on("click", function(event) {
+        $("#movies-view").empty();
         event.preventDefault();
         // This line grabs the input from the textbox
         var movie = $("#movie-input").val().trim();
 
         // Adding movie from the textbox to our array
-        movies.push(movie);
+        topics.push(movie);
 
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
