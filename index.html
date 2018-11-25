@@ -18,31 +18,39 @@
   </style>
 </head>
 
-<body>
+<body style = "background-color: lightgray">
 
   
     <h1></h1>
 
-    <!-- Rendered Buttons will get Dumped Here  -->
+    <!-- Rendered Buttons go Here  -->
     <div id="buttons-view"></div>
 
-    <div class = "container">
+    <!--<div class = "container">-->
         <div class="row">
-          <div class="col-lg-8">
-            <form id="hp-form">
+
+            <div class="col-lg-6">
+                <div class = "gifDeposit">
+    
+                </div>
+                
+              </div>
+          
+          <div class="col-lg-5">
+          <form id="hp-form">
+            <div> 
               <label for="hp-input"> <h5><strong>Search a Harry Potter Gif: </strong></h5></label>
+            </div>
+            <div> 
                 <input type="text" id="hp-input">
-                <br>
-          </div>
-
-          <div class="col-lg-4">
-      <!-- Button triggers new hp to be added -->
+            </div>
+              </form> 
+              <div> 
            <button class = "btn btn-info" id="add-hp" type="submit" > Add some Gifs!</button>
-          </form>
-
-    <!-- Movies will Get Dumped Here -->
-              <div id="hps-view"></div>
-          </div>
+              </div> 
+             
+        
+       
       </div>
    
 
@@ -79,7 +87,7 @@
             $(image).attr("movingURL", imgMovURL);
             $(image).attr("stillURL", imgURL);
             potterDiv.append(image);
-            $("#hps-view").prepend(potterDiv);
+            $(".gifDeposit").prepend(potterDiv);
 
           }
 
@@ -128,7 +136,7 @@
 
       // This function handles events where a movie button is clicked
       $("#add-hp").on("click", function(event) {
-        $("#hps-view").empty();
+       // $("#hps-view").empty();
         event.preventDefault();
         // This line grabs the input from the textbox
         var hp = $("#hp-input").val().trim();
