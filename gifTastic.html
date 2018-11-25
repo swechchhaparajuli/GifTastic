@@ -20,31 +20,31 @@
 
 <body>
 
-  <div class="container">
-    <h1>Harry Potter Gif Search</h1>
+  
+    <h1></h1>
 
     <!-- Rendered Buttons will get Dumped Here  -->
     <div id="buttons-view"></div>
 
     <div class = "container">
         <div class="row">
-          <div class="col-sm-8">
-            <form id="movie-form">
-              <label for="movie-input"> <h4>Enter Gif Search: </h4></label>
-                <input type="text" id="movie-input">
+          <div class="col-lg-8">
+            <form id="hp-form">
+              <label for="hp-input"> <h5><strong>Search a Harry Potter Gif: </strong></h5></label>
+                <input type="text" id="hp-input">
                 <br>
           </div>
 
-          <div class="col-sm-4">
-      <!-- Button triggers new movie to be added -->
-            <input id="add-movie" type="submit" value="Add some Gifs!">
+          <div class="col-lg-4">
+      <!-- Button triggers new hp to be added -->
+           <button class = "btn btn-info" id="add-hp" type="submit" > Add some Gifs!</button>
           </form>
 
     <!-- Movies will Get Dumped Here -->
-              <div id="movies-view"></div>
+              <div id="hps-view"></div>
           </div>
       </div>
-    </div>
+   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -52,7 +52,7 @@
       var topics = ["Harry Potter", "luna", "ron weasley"];
 
       // displayMovieInfo function re-renders the HTML to display the appropriate content
-      function displayMovieInfo() {
+      function displayhpInfo() {
 
         var potter = "harry potter " + $(this).attr("data-name");
         var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=6HbQXsBHPrRMObSKz189KkHd7H2B9sn7&q=" + potter + "&limit=25&offset=0&rating=G&lang=en";
@@ -67,9 +67,9 @@
           
 
           for(var i = 0; i<10; i++){
-            var potterDiv = $("<div class='movie'>");
+            var potterDiv = $("<div class='hp'>");
             var rating = response.data[0].rating;
-            var pOne = $("<p>").text("Rating: " + rating);
+            var pOne = $("<h4>").text("Rating: " + rating);
             potterDiv.append(pOne);
             var imgURL = response.data[i].images.fixed_height_still.url;
             var imgMovURL = response.data[i].images.fixed_height.url;
@@ -79,7 +79,7 @@
             $(image).attr("movingURL", imgMovURL);
             $(image).attr("stillURL", imgURL);
             potterDiv.append(image);
-            $("#movies-view").prepend(potterDiv);
+            $("#hps-view").prepend(potterDiv);
 
           }
 
@@ -114,7 +114,7 @@
           // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
           var a = $("<button>"); 
           // Adding a class of movie-btn to our button
-          a.addClass("movie-btn btn btn-primary");
+          a.addClass("hp-btn btn btn-info");
 
           // Adding a data-attribute
           a.attr("data-name", topics[i]);
@@ -127,21 +127,21 @@
       }
 
       // This function handles events where a movie button is clicked
-      $("#add-movie").on("click", function(event) {
-        $("#movies-view").empty();
+      $("#add-hp").on("click", function(event) {
+        $("#hps-view").empty();
         event.preventDefault();
         // This line grabs the input from the textbox
-        var movie = $("#movie-input").val().trim();
+        var hp = $("#hp-input").val().trim();
 
         // Adding movie from the textbox to our array
-        topics.push(movie);
+        topics.push(hp);
 
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
       });
 
       // Adding a click event listener to all elements with a class of "movie-btn"
-      $(document).on("click", ".movie-btn", displayMovieInfo);
+      $(document).on("click", ".hp-btn", displayhpInfo);
 
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
