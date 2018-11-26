@@ -26,31 +26,31 @@
     <!-- Rendered Buttons go Here  -->
     <div id="buttons-view"></div>
 
-    <!--<div class = "container">-->
+    <div class = "container">
         <div class="row">
 
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class = "gifDeposit">
     
                 </div>
                 
               </div>
           
-          <div class="col-lg-5">
+          <div class="col-lg-3">
           <form id="hp-form">
             <div> 
-              <label for="hp-input"> <h5><strong>Search a Harry Potter Gif: </strong></h5></label>
+              <label for="hp-input"> <h6><strong> Add a Harry Potter term : </strong></h6></label>
             </div>
             <div> 
-                <input type="text" id="hp-input">
+                <input type="text" id="hp-input" style = "width:300px">
             </div>
-              </form> 
               <div> 
-           <button class = "btn btn-info" id="add-hp" type="submit" > Add some Gifs!</button>
+           <button class = "btn btn-info" id="add-hp" type="submit" > Submit</button>
+          </form> 
               </div> 
-             
-        
        
+          </div>
+        </div>
       </div>
    
 
@@ -79,8 +79,8 @@
             var rating = response.data[0].rating;
             var pOne = $("<h4>").text("Rating: " + rating);
             potterDiv.append(pOne);
-            var imgURL = response.data[i].images.fixed_height_still.url;
-            var imgMovURL = response.data[i].images.fixed_height.url;
+            var imgURL = response.data[i].images.fixed_height_small_still.url;
+            var imgMovURL = response.data[i].images.fixed_height.url; // also increases size, can replace with images.fixed_height_small.url for normal size
             var image = $("<img>").attr("src", imgURL);
             $(image).attr("status", "still");
             image.addClass("gif");
@@ -136,6 +136,7 @@
 
       // This function handles events where a movie button is clicked
       $("#add-hp").on("click", function(event) {
+        
        // $("#hps-view").empty();
         event.preventDefault();
         // This line grabs the input from the textbox
@@ -143,7 +144,8 @@
 
         // Adding movie from the textbox to our array
         topics.push(hp);
-
+        
+      
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
       });
