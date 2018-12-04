@@ -87,7 +87,7 @@
             image.addClass("gif");
             $(image).attr("movingURL", imgMovURL);
             $(image).attr("stillURL", imgURL);
-            potterDiv.append(image);
+            potterDiv.prepend(image); // rating set to be after the GIFs-- change to append to move it to before
             $(".gifDeposit").prepend(potterDiv);
 
           }     
